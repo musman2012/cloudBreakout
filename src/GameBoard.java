@@ -53,9 +53,13 @@ public class GameBoard extends JPanel{
 			
 			levelInstruction = instructions;
 			
-			parseIntructions(instructions);
+	//		parseIntructions(instructions);
 			
-			dynamicBoard = new DynamicBoard(numberOfBricks, levelInstruction);
+			dynamicBoard = new DynamicBoard(levelInstruction);
+			
+			numberOfBricks = dynamicBoard.getNumberOfBricks();
+			
+			slowness = dynamicBoard.getSlowness();
 			
 			initializeBoard();
 			
@@ -74,16 +78,16 @@ public class GameBoard extends JPanel{
 			
 		}
 		
-		private void parseIntructions(String instructions)
-		{
-			String str_slowness = instructions.substring(2,4);
-			
-			String str_bricks = instructions.substring(5,7);
-			
-			slowness = Integer.parseInt(str_slowness);
-			
-			numberOfBricks = Integer.parseInt(str_bricks);
-		}
+//		private void parseIntructions(String instructions)
+//		{
+//			String str_slowness = instructions.substring(2,4);
+//			
+//			String str_bricks = instructions.substring(5,7);
+//			
+//			slowness = Integer.parseInt(str_slowness);
+//			
+//			numberOfBricks = Integer.parseInt(str_bricks);
+//		}
 		
 		private class myTask extends TimerTask{
 
@@ -115,11 +119,14 @@ public class GameBoard extends JPanel{
 			setFocusable(true);
 			addKeyListener(new MyListener());		// add listener
 			
-			s = new Slider(160, 540);				// initialize slider
+			int sliderInitalX = (int) ((Math.random() * 1000 + 100) % 500);
+			int sliderInitalY = 540;
+			
+			s = new Slider(sliderInitalX, sliderInitalY);				// initialize slider
 			dynamicBoard.addBricks();				// Initializing Bricks positions
 			
-			int ballInitalX = (int) ((Math.random() * 1000) % 600);
-			ball = new Ball(ballInitalX, 150, 10);
+			int ballInitalX = (int) ((Math.random() * 1000 + 100) % 500);
+			ball = new Ball(sliderInitalX + 20, sliderInitalY - 10, 10);
 			
 			this.add(scoreLabel, 0, 0);
 			
@@ -150,7 +157,15 @@ public class GameBoard extends JPanel{
 		
 		public void drawSprites(Graphics2D g)
 		{
-			Rectangle brickObjects [] = new Rectangle[numberOfBricks]; 
+			Rectangle brickObjects [] = new Rectangle[numberOfBricks];
+			
+		//	int [] colorArray = dynamicBoard.getRowColors();
+			
+			Color [] colorArray = new Color [numberOfBricks];
+			
+			int rows = colorArray.length, counter = 0;
+			
+			int cols = numberOfBricks/rows;
 			
 //			g.clearRect(130, 130, 200, 30);
 			
@@ -164,14 +179,29 @@ public class GameBoard extends JPanel{
 			
 			g.drawString(score.toString(), 0, 0);
 			
-			dynamicBoard.getBricksToDraw(brickObjects);
+			dynamicBoard.getBricksToDraw(brickObjects, colorArray);
 			
-			for(int i = 0; i<numberOfBricks; i++)
+	//		dynamicBoard.
+			
+			for(int i = 0; i<rows; i++)
 			{
-				g.fill(brickObjects[i]);
+//				if(colorArray[i] == 1)				// RED color
+//					g.setColor(Color.RED);
+//				else if(colorArray[i] == 2)			// BLACK color
+//					g.setColor(Color.BLACK);
+//				else if(colorArray[i] == 3)			// BLUE color
+//					g.setColor(Color.BLUE);
+//				else if(colorArray[i] == 4)			// YELLOW color
+//					g.setColor(Color.YELLOW);
+				g.setColor(colorArray[i]);
+				
+				for(int j = 0; j<cols; j++)
+				{
+					g.fill(brickObjects[counter]);
+					counter++;
+				}
+			
 			}
-			
-			
 		}
 		
 		private class MyListener implements KeyListener {

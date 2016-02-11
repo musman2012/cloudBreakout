@@ -27,6 +27,7 @@ class Slider{
 	//	System.out.println(x+"            X ");
 		return new Rectangle(x, y, WIDTH_OF_SLIDER, HEIGHT_OF_SLIDER);
 	}
+	
 
 	public void move(KeyEvent e){
 		int event = e.getKeyCode();

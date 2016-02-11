@@ -3,7 +3,7 @@ import java.awt.geom.*;;
 
 public class Ball {
 	
-	private int starting_x, starting_y, diameter, directionOfX = 1, directionOfY = 1;
+	private int starting_x, starting_y, diameter, directionOfX = 1, directionOfY = -1;
 
 	Ball()
 	{
@@ -48,6 +48,15 @@ public class Ball {
 		directionOfY = y;
 	}
 	
+	public int getX()
+	{
+		return starting_x;
+	}
+	
+	public int getY()
+	{
+		return starting_y;
+	}
 	
 	public void moveTheBall()
 	{
